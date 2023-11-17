@@ -1,7 +1,12 @@
 import LoadingIcon from "../../shared/components/LoadingIcon";
 import useLabels from "../hooks/useLabels"
 
-export const LabelPicker = () => {
+interface Props {
+  selectedLabels: string[],
+  onLabelChanged: (labelname: string) => void
+}
+
+export const LabelPicker = ({ selectedLabels, onLabelChanged }: Props) => {
 
   const { labelsQuery } = useLabels();
 
@@ -15,8 +20,9 @@ export const LabelPicker = () => {
           labelsQuery.data?.map(label => (
             <span
               key={label.id}
-              className="badge rounded-pill m-1 label-picker"
+              className={`badge rounded-pill m-1 label-picker ${ selectedLabels.includes(label.name) ? 'label-active' : '' }`}
               style={{ border: `1px solid #${label.color}`, color: `#${label.color}` }}
+              onClick={() => onLabelChanged(label.name)}
             >
               {label.name}
             </span>
